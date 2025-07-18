@@ -1,8 +1,10 @@
 package br.com.jvictor.TabelaFipe.view;
 
+import br.com.jvictor.TabelaFipe.model.Dados;
 import br.com.jvictor.TabelaFipe.service.ConsumoApi;
 import br.com.jvictor.TabelaFipe.service.ConverteDados;
 
+import java.util.Comparator;
 import java.util.List;
 import java.util.Scanner;
 
@@ -41,6 +43,10 @@ public class Principal {
 
         var json = consumoApi.obterDados(address);
         System.out.println(json);
-        var marcas = conversor.obterLista(json, List.class);
+        var marcas = conversor.obterLista(json, Dados.class);
+
+        marcas.stream()
+                .sorted(Comparator.comparing(Dados::codigo))
+                .forEach(System.out::println);
     }
 }
