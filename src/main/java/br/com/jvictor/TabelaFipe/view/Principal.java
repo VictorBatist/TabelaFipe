@@ -1,10 +1,15 @@
 package br.com.jvictor.TabelaFipe.view;
 
+import br.com.jvictor.TabelaFipe.service.ConsumoApi;
+
 import java.util.Scanner;
 
 public class Principal {
 
     private Scanner scanner = new Scanner(System.in);
+    private ConsumoApi consumoApi = new ConsumoApi();
+
+    private final String URL_BASE = "https://parallelum.com.br/fipe/api/v1/";
 
     public void exibeMenu(){
         var menu = """
@@ -21,6 +26,17 @@ public class Principal {
 
         System.out.println(menu);
         var opcao = scanner.nextLine();
+        String address;
 
+        if (opcao.toLowerCase().contains("carr")){
+            address = URL_BASE + "carros/marcas";
+        }else if (opcao.toLowerCase().contains("mot")){
+            address = URL_BASE + "motos/marcas";
+        }else {
+            address = URL_BASE + "caminhoes/marcas";
+        }
+
+        var json = consumoApi.obterDados(address);
+        System.out.println(json);
     }
 }
