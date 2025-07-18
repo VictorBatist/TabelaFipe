@@ -1,13 +1,16 @@
 package br.com.jvictor.TabelaFipe.view;
 
 import br.com.jvictor.TabelaFipe.service.ConsumoApi;
+import br.com.jvictor.TabelaFipe.service.ConverteDados;
 
+import java.util.List;
 import java.util.Scanner;
 
 public class Principal {
 
     private Scanner scanner = new Scanner(System.in);
     private ConsumoApi consumoApi = new ConsumoApi();
+    private ConverteDados conversor = new ConverteDados();
 
     private final String URL_BASE = "https://parallelum.com.br/fipe/api/v1/";
 
@@ -38,5 +41,6 @@ public class Principal {
 
         var json = consumoApi.obterDados(address);
         System.out.println(json);
+        var marcas = conversor.obterLista(json, List.class);
     }
 }
