@@ -1,6 +1,7 @@
 package br.com.jvictor.TabelaFipe.view;
 
 import br.com.jvictor.TabelaFipe.model.Dados;
+import br.com.jvictor.TabelaFipe.model.Modelos;
 import br.com.jvictor.TabelaFipe.service.ConsumoApi;
 import br.com.jvictor.TabelaFipe.service.ConverteDados;
 
@@ -46,6 +47,19 @@ public class Principal {
         var marcas = conversor.obterLista(json, Dados.class);
 
         marcas.stream()
+                .sorted(Comparator.comparing(Dados::codigo))
+                .forEach(System.out::println);
+
+        System.out.println("\nInforme o codigo da marca para consulta: ");
+        var codigoMarca = scanner.nextLine();
+
+        address = address + "/" + codigoMarca + "/modelos";
+        json = consumoApi.obterDados(address);
+
+        var modeloList = conversor.obterDados(json, Modelos.class);
+
+        System.out.println("\nModelos da marca: ");
+        modeloList.modelos().stream()
                 .sorted(Comparator.comparing(Dados::codigo))
                 .forEach(System.out::println);
     }
