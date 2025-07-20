@@ -2,9 +2,11 @@ package br.com.jvictor.TabelaFipe.view;
 
 import br.com.jvictor.TabelaFipe.model.Dados;
 import br.com.jvictor.TabelaFipe.model.Modelos;
+import br.com.jvictor.TabelaFipe.model.Veiculo;
 import br.com.jvictor.TabelaFipe.service.ConsumoApi;
 import br.com.jvictor.TabelaFipe.service.ConverteDados;
 
+import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Scanner;
@@ -79,5 +81,19 @@ public class Principal {
 
         address = address + "/" + codigoModelo + "/anos";
         json = consumoApi.obterDados(address);
+        List<Dados> anos = conversor.obterLista(json, Dados.class);
+        List<Veiculo> veiculos = new ArrayList<>();
+
+        for (int i = 0; i < anos.size(); i++) {
+            var addressYear = address + "/" + anos.get(i).codigo();
+            json = consumoApi.obterDados(addressYear);
+            Veiculo veiculo = conversor.obterDados(json, Veiculo.class);
+            veiculos.add(veiculo);
+        }
+
+        System.out.println("\nVeiculos filtrados com avaliações por anuais: ");
+
+        veiculos.forEach(System.out::println);
+        
     }
 }
