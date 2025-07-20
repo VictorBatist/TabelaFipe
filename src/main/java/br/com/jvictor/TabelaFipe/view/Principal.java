@@ -8,6 +8,7 @@ import br.com.jvictor.TabelaFipe.service.ConverteDados;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Scanner;
+import java.util.stream.Collectors;
 
 public class Principal {
 
@@ -62,5 +63,21 @@ public class Principal {
         modeloList.modelos().stream()
                 .sorted(Comparator.comparing(Dados::codigo))
                 .forEach(System.out::println);
+
+        System.out.println("\nDigite o modelo do veiculo que deseja: ");
+        var nomeVeiculo = scanner.nextLine();
+
+        List<Dados> modelosFiltrados = modeloList.modelos().stream()
+                .filter(m-> m.nome().toLowerCase().contains(nomeVeiculo.toLowerCase()))
+                .collect(Collectors.toList());
+
+        System.out.println("\nModelos Filtrados:");
+        modelosFiltrados.forEach(System.out::println);
+
+        System.out.println("\nPor favor digite o codigo do modelo para buscar os valores de avaliação: ");
+        var codigoModelo = scanner.nextLine();
+
+        address = address + "/" + codigoModelo + "/anos";
+        json = consumoApi.obterDados(address);
     }
 }
